@@ -18,11 +18,13 @@ function App() {
   const [currentPage, setCurrentPage] = useState('overview');
   const [selectedLead, setSelectedLead] = useState(null);
 
-  const isContactPage = window.location.pathname === '/contact';
+  const isContactPage =
+    window.location.pathname === '/contact';
 
   useEffect(() => {
     const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
+      const { data } =
+        await supabase.auth.getSession();
 
       setSession(data.session);
       setLoading(false);
@@ -58,6 +60,12 @@ function App() {
 
     setSelectedLead(null);
     setCurrentPage('overview');
+  };
+
+  const handleSettings = () => {
+    alert(
+      'Settings are managed through the Supabase admin configuration.'
+    );
   };
 
   /*
@@ -101,6 +109,7 @@ function App() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         onLogout={handleLogout}
+        onSettings={handleSettings}
       />
 
       <main className="main-content">
@@ -116,12 +125,13 @@ function App() {
           />
         )}
 
-        {currentPage === 'lead-details' && selectedLead && (
-          <LeadDetails
-            lead={selectedLead}
-            onBack={handleBackToLeads}
-          />
-        )}
+        {currentPage === 'lead-details' &&
+          selectedLead && (
+            <LeadDetails
+              lead={selectedLead}
+              onBack={handleBackToLeads}
+            />
+          )}
       </main>
     </div>
   );

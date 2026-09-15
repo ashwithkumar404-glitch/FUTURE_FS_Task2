@@ -63,9 +63,10 @@ function Leads({ onViewLead }) {
   const filteredLeads = leads.filter((lead) => {
     const searchText = search.toLowerCase();
 
-    const matchesSearch =
-      lead.name.toLowerCase().includes(searchText) ||
-      lead.email.toLowerCase().includes(searchText);
+  const matchesSearch =
+  lead.name.toLowerCase().includes(searchText) ||
+  lead.email.toLowerCase().includes(searchText) ||
+  (lead.phone || '').toLowerCase().includes(searchText);
 
     const matchesStatus =
       statusFilter === 'All' ||
@@ -94,7 +95,7 @@ function Leads({ onViewLead }) {
 
           <input
             type="text"
-            placeholder="Search by name or email..."
+            placeholder="Search by name, email or phone..."
             value={search}
             onChange={(event) =>
               setSearch(event.target.value)

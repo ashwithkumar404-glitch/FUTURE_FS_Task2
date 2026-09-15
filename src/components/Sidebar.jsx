@@ -2,6 +2,7 @@ function Sidebar({
   currentPage,
   setCurrentPage,
   onLogout,
+  onSettings,
 }) {
   return (
     <aside className="sidebar">
@@ -17,9 +18,13 @@ function Sidebar({
       <nav className="sidebar-nav">
         <button
           className={`nav-item ${
-            currentPage === 'overview' ? 'active' : ''
+            currentPage === 'overview'
+              ? 'active'
+              : ''
           }`}
-          onClick={() => setCurrentPage('overview')}
+          onClick={() =>
+            setCurrentPage('overview')
+          }
         >
           <span>⌂</span>
           <span>Overview</span>
@@ -32,7 +37,9 @@ function Sidebar({
               ? 'active'
               : ''
           }`}
-          onClick={() => setCurrentPage('leads')}
+          onClick={() =>
+            setCurrentPage('leads')
+          }
         >
           <span>◉</span>
           <span>Leads</span>
@@ -40,7 +47,10 @@ function Sidebar({
       </nav>
 
       <div className="sidebar-bottom">
-        <button className="nav-item">
+        <button
+          className="nav-item"
+          onClick={onSettings}
+        >
           <span>⚙</span>
           <span>Settings</span>
         </button>

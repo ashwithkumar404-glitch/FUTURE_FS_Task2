@@ -14,8 +14,9 @@ function LeadDetails({ lead, onBack }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchFollowUps = async () => {
+    async function fetchFollowUps() {
       setLoadingNotes(true);
+      setError('');
 
       const { data, error: fetchError } = await supabase
         .from('follow_ups')
@@ -31,7 +32,7 @@ function LeadDetails({ lead, onBack }) {
       }
 
       setLoadingNotes(false);
-    };
+    }
 
     fetchFollowUps();
   }, [lead.id]);
@@ -95,6 +96,21 @@ function LeadDetails({ lead, onBack }) {
     setSavingNote(false);
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) {
+      return 'No date';
+    }
+
+    return new Date(dateString).toLocaleDateString(
+      'en-IN',
+      {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      }
+    );
+  };
+
   return (
     <section className="lead-details-page">
       <button
@@ -118,9 +134,7 @@ function LeadDetails({ lead, onBack }) {
 
           <div>
             <p className="eyebrow">Lead Details</p>
-
             <h2>{lead.name}</h2>
-
             <span>{lead.email}</span>
           </div>
         </div>
@@ -130,11 +144,11 @@ function LeadDetails({ lead, onBack }) {
 
       <div className="details-grid">
         <div className="details-main">
+
           <div className="details-card">
             <div className="card-heading">
               <div>
                 <p className="eyebrow">Contact</p>
-
                 <h3>Contact Information</h3>
               </div>
             </div>
@@ -158,13 +172,7 @@ function LeadDetails({ lead, onBack }) {
               <div className="contact-item">
                 <span>Received</span>
                 <strong>
-                  {new Date(
-                    lead.created_at
-                  ).toLocaleDateString('en-IN', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                  })}
+                  {formatDate(lead.created_at)}
                 </strong>
               </div>
             </div>
@@ -174,7 +182,6 @@ function LeadDetails({ lead, onBack }) {
             <div className="card-heading">
               <div>
                 <p className="eyebrow">Message</p>
-
                 <h3>Customer Enquiry</h3>
               </div>
             </div>
@@ -188,7 +195,6 @@ function LeadDetails({ lead, onBack }) {
             <div className="card-heading">
               <div>
                 <p className="eyebrow">Communication</p>
-
                 <h3>Follow-up Notes</h3>
               </div>
             </div>
@@ -213,9 +219,7 @@ function LeadDetails({ lead, onBack }) {
                     type="date"
                     value={followUpDate}
                     onChange={(event) =>
-                      setFollowUpDate(
-                        event.target.value
-                      )
+                      setFollowUpDate(event.target.value)
                     }
                   />
                 </div>
@@ -244,24 +248,20 @@ function LeadDetails({ lead, onBack }) {
                   >
                     <div className="follow-up-dot"></div>
 
-                    <div>
+                    <div className="follow-up-content">
                       <p>{item.note}</p>
 
-                      <span>
-                        Follow-up:{' '}
-                        {item.follow_up_date
-                          ? new Date(
-                              `${item.follow_up_date}T00:00:00`
-                            ).toLocaleDateString(
-                              'en-IN',
-                              {
-                                day: '2-digit',
-                                month: 'short',
-                                year: 'numeric',
-                              }
-                            )
-                          : 'No date'}
-                      </span>
+                      <div className="follow-up-meta">
+                        <span>
+                          Follow-up:{' '}
+                          {formatDate(item.follow_up_date)}
+                        </span>
+
+                        <span>
+                          Added:{' '}
+                          {formatDate(item.created_at)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))
@@ -272,12 +272,13 @@ function LeadDetails({ lead, onBack }) {
               )}
             </div>
           </div>
+
         </div>
 
         <aside className="details-side">
+
           <div className="details-card">
             <p className="eyebrow">Lead Status</p>
-
             <h3>Update Status</h3>
 
             <select
@@ -287,14 +288,8 @@ function LeadDetails({ lead, onBack }) {
               disabled={savingStatus}
             >
               <option value="New">New</option>
-
-              <option value="Contacted">
-                Contacted
-              </option>
-
-              <option value="Converted">
-                Converted
-              </option>
+              <option value="Contacted">Contacted</option>
+              <option value="Converted">Converted</option>
             </select>
 
             {savingStatus && (
@@ -306,7 +301,6 @@ function LeadDetails({ lead, onBack }) {
 
           <div className="details-card">
             <p className="eyebrow">Quick Action</p>
-
             <h3>Contact Lead</h3>
 
             <div className="quick-actions">
@@ -321,6 +315,7 @@ function LeadDetails({ lead, onBack }) {
               )}
             </div>
           </div>
+
         </aside>
       </div>
     </section>
